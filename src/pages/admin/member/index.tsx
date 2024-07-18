@@ -72,7 +72,9 @@ export default function Member() {
                       <Text fontSize="sm">資格:</Text>
                       <Badge
                         variant="outline"
-                        colorScheme={employee.qualifications ? "blue" : "gray"}
+                        colorScheme={
+                          employee.qualifications !== "なし" ? "blue" : "gray"
+                        }
                         p="0 5px"
                       >
                         <Text p="1px 7px">{employee.qualifications}</Text>

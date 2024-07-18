@@ -22,3 +22,33 @@ model Employee {
   emergency_contact_phone     String
   qualifications              String
 }
+
+model Company {
+  id              Int       @id @default(autoincrement())
+  name            String
+  address         String
+  phone           String
+  email           String
+
+  projects        Project[]
+}
+
+model Project {
+  id              Int       @id @default(autoincrement())
+  phone            String
+  qualifications     String
+  qualificationsPersonCount Int
+  needMember      Int
+  type            String
+  price           String
+  data            DateTime
+  startDate       DateTime
+  endDate         DateTime
+  staff           String
+  staffPhone      String
+  note            String
+  companyId       Int
+
+  // Companyモデルとの関連
+  company         Company   @relation(fields: [companyId], references: [id])
+}
