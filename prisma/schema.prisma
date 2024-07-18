@@ -35,13 +35,13 @@ model Company {
 
 model Project {
   id              Int       @id @default(autoincrement())
-  phone            String
+  name            String
   qualifications     String
   qualificationsPersonCount Int
   needMember      Int
   type            String
   price           String
-  data            DateTime
+  date            DateTime
   startDate       DateTime
   endDate         DateTime
   staff           String
