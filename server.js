@@ -1,8 +1,6 @@
 const express = require("express");
 const bodyParser = require("body-parser");
 const cors = require("cors"); // CORSパッケージをインポート
-// const { Sequelize } = require("sequelize");
-const EmployeeModel = require("./models/employee");
 require("dotenv").config({ path: ".env.local" }); // .env.localファイルから環境変数を読み込む
 
 const app = express();
@@ -10,18 +8,6 @@ const port = 3001;
 
 const { PrismaClient } = require("@prisma/client");
 const prisma = new PrismaClient();
-
-// const sequelize = new Sequelize(
-//   process.env.DB_NAME,
-//   process.env.DB_USERNAME,
-//   process.env.DB_PASSWORD,
-//   {
-//     host: process.env.DB_HOST,
-//     dialect: process.env.DB_DIALECT,
-//   }
-// );
-
-// const Employee = EmployeeModel(sequelize);
 
 app.use(bodyParser.json());
 app.use(cors()); // CORSを有効にする
