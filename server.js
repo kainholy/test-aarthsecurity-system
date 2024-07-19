@@ -102,38 +102,52 @@ app.post("/api/companies", async (req, res) => {
   }
 });
 
+app.delete("/api/companies/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    await prisma.company.delete({ where: { id: parseInt(id) } });
+    res.status(204).send();
+  } catch (error) {
+    console.error("Error deleting company:", error);
+    res.status(500).json({
+      error: "An error occurred while deleting the company",
+      details: error.message,
+    });
+  }
+});
+
+app.get("/api/companies/:id/projects", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const projects = await prisma.project.findMany({
+      where: { companyId: parseInt(id) },
+    });
+    res.status(200).json(projects);
+  } catch (error) {
+    console.error("Error fetching projects:", error);
+    res.status(500).json({
+      error: "An error occurred while fetching projects",
+      details: error.message,
+    });
+  }
+});
 app.get("/api/projects", async (req, res) => {
   try {
     const projects = await prisma.project.findMany();
     res.status(200).json(projects);
   } catch (error) {
     console.error("Error fetching projects:", error);
-    res
-      .status(500)
-      .json({ error: "An error occurred while fetching projects" });
+    res.status(500).json({
+      error: "An error occurred while fetching projects",
+      details: error.message,
+    });
   }
 });
 
 app.post("/api/projects", async (req, res) => {
   try {
     console.log("Request body:", req.body);
-    const newProject = await prisma.project.create({
-      data: {
-        name: req.body.name,
-        qualifications: req.body.qualifications,
-        qualificationsPersonCount: req.body.qualificationsPersonCount,
-        needMember: req.body.needMember,
-        type: req.body.type,
-        price: req.body.price, // 文字列型としてそのまま保存
-        date: req.body.date, // クライアント側でISO形式に変換済み
-        startDate: req.body.startDate, // クライアント側でISO形式に変換済み
-        endDate: req.body.endDate, // クライアント側でISO形式に変換済み
-        staff: req.body.staff,
-        staffPhone: req.body.staffPhone,
-        note: req.body.note,
-        companyId: parseInt(req.body.companyId, 10), // Ensure companyId is an integer
-      },
-    });
+    const newProject = await prisma.project.create({ data: req.body });
     res.status(201).json(newProject);
   } catch (error) {
     console.error("Error creating project:", error);

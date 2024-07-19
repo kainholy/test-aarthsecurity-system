@@ -86,6 +86,7 @@ function MemberCreate() {
     const formatDate = new Date(projectData.date).toISOString();
     const formatStartDate = `1970-01-01T${projectData.startDate}:00.000Z`;
     const formatEndDate = `1970-01-01T${projectData.endDate}:00.000Z`;
+    const formatCompanyId = parseInt(projectData.companyId, 10);
 
     const projectDataToSubmit = {
       name: projectData.name,
@@ -100,7 +101,7 @@ function MemberCreate() {
       staff: projectData.staff,
       staffPhone: projectData.staffPhone,
       note: projectData.note,
-      companyId: projectData.companyId,
+      companyId: formatCompanyId,
     };
 
     axios

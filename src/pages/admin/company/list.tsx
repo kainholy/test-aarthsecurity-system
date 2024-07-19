@@ -1,18 +1,8 @@
-import {
-  Box,
-  Flex,
-  Card,
-  CardHeader,
-  CardBody,
-  CardFooter,
-  Text,
-  Heading,
-  Badge,
-  Grid,
-} from "@chakra-ui/react";
+import { Box, Flex, Card, Text, Heading, Grid, Badge } from "@chakra-ui/react";
 import axios from "axios";
 import Navigation from "../../components/Navigation";
 import Bread from "../../components/Breadcrumb";
+import { useRouter } from "next/router";
 import { useEffect, useState } from "react";
 
 interface Project {
@@ -29,10 +19,13 @@ interface Project {
   staff: string;
   staffPhone: string;
   note: string;
+  companyId: number;
 }
 
-export default function Projects() {
+export default function CompanyProjects() {
   const [projects, setProjects] = useState<Project[]>([]);
+  const router = useRouter();
+  const { id } = router.query;
 
   useEffect(() => {
     axios
@@ -45,15 +38,19 @@ export default function Projects() {
       });
   }, []);
 
+  const filteredProjects = projects.filter(
+    (project) => project.companyId === parseInt(id as string, 10)
+  );
+
   return (
     <>
       <Navigation />
       <Box w="calc(100% - 220px)" margin="0 0 0 auto">
         <Bread />
         <Box p="64px 40px">
-          <Heading size="lg">すべての案件</Heading>
+          <Heading size="lg">会社の案件一覧</Heading>
           <Grid gap="20px" templateColumns="repeat(3, 1fr)" mt="20px">
-            {projects.map((project) => (
+            {filteredProjects.map((project) => (
               <Card p="17px 18px" key={project.id}>
                 <Heading fontSize="md">{project.name}</Heading>
                 <Flex gap="4px" pt="6px" direction="column">
